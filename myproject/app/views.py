@@ -4,7 +4,7 @@ from .models import Employee
 from django.contrib.auth.models import User
 from .serializer import EmployeeSerializer,UserSerializer
 from django.views.decorators.csrf import csrf_exempt
-
+from rest_framework.parsers import JSONParser
 # Create your views here.
 @csrf_exempt
 def employeeListView(request):
@@ -14,7 +14,14 @@ def employeeListView(request):
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
-        return JsonResponse({'message':'Succesfully'})
+        jsonData = JSONParser().parse(request)
+        serializer = EmployeeSerializer(data=jsonData)
+        if serializer.is_valid():
+            serializer.save()
+            # print(jsonData)
+            return JsonResponse(serializer.data,safe=False)
+        else:
+            return JsonResponse(serializer.errors, safe=False)
 
 def UserListView(request):
     usr = User.objects.all()

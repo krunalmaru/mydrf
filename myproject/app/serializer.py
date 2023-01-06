@@ -8,9 +8,17 @@ class EmployeeSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=100)
     phone = serializers.CharField(max_length=20)
 
+    def create(self, validated_data):
+        print("create method called")
+        return Employee.objects.create(**validated_data)
+
 class UserSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=70)
     email = serializers.EmailField()
     password = serializers.CharField(max_length=20)
     first_name = serializers.CharField(max_length=50)
     last_name = serializers.CharField(max_length=50)
+
+    def create(self, validated_data):
+        print("user saved")
+        return User.objects.create(**validated_data)

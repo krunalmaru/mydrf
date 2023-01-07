@@ -6,3 +6,6 @@ class Employee(models.Model):
     email = models.EmailField()
     password = models.CharField(max_length=100)
     phone = models.CharField(max_length=20)
+
+    def __str__(self) -> str:
+        return self.name

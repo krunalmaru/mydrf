@@ -50,7 +50,6 @@ def employeeDetailView(request, pk):
         return Response(serializer.errors)
 
 
-
 @api_view(['GET','POST'])
 def UserListView(request):
     if request.method == 'GET':
@@ -64,3 +63,4 @@ def UserListView(request):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+

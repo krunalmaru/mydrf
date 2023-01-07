@@ -40,7 +40,12 @@ def employeeDetailView(request, pk):
         serializer = EmployeeSerializer(employee)
         return JsonResponse(serializer.data,safe=False)
     elif request.method == 'PUT':
-        pass
+        jsondata = JSONParser().parse(request)
+        serializer = EmployeeSerializer(employee, data=jsondata)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, safe=False)
+        return JsonResponse(serializer.errors)
 
 
 

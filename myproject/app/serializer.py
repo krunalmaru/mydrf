@@ -12,6 +12,12 @@ class EmployeeSerializer(serializers.Serializer):
         print("create method called")
         return Employee.objects.create(**validated_data)
 
+    def update(self, employee, validated_data):
+        newemployee = Employee(**validated_data)
+        newemployee.id = employee.id
+        newemployee.save()
+        return newemployee
+        
 class UserSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=70)
     email = serializers.EmailField()

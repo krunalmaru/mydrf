@@ -16,6 +16,9 @@ class CourseListView(generics.ListAPIView, generics.CreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseModelSerializer
 
+class CorseDetailView(generics.RetrieveAPIView, generics.UpdateAPIView,generics.DestroyAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseModelSerializer
 
 '''
 class CourseListView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
@@ -29,7 +32,7 @@ class CourseListView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.Ge
     def post(self, request):
         return self.create(request)
 '''
-
+'''
 class CorseDetailView(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin):
     queryset = Course.objects.all()
     serializer_class = CourseModelSerializer
@@ -42,7 +45,7 @@ class CorseDetailView(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins
 
     def put(self, request,pk):
         return self.update(request,pk)
-
+'''
 
 # class CourseListView(APIView):
 #     def get(self, request):

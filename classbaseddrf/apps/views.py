@@ -1,13 +1,26 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Course,CourseModelSerializer
+from .models import Course,CourseModelSerializer, Instructor,InstructorSerializer,MyCourse,MyCourseSerializer
 from django.http import Http404
 from rest_framework import status
 from rest_framework import mixins, generics
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ViewSet,ModelViewSet
 # Create your views here.
 
+class InstructorListView(generics.ListCreateAPIView):
+    serializer_class = InstructorSerializer
+    queryset = Instructor.objects.all()
+
+class MyCoursesListview(generics.ListCreateAPIView):
+    serializer_class = MyCourseSerializer
+    queryset = MyCourse.objects.all()
+
+# class CourseViewSet(ModelViewSet):
+#     queryset = Course.objects.all()
+#     serializer_class = CourseModelSerializer
+
+'''
 class CourseViewSet(ViewSet):
     def list(self,request):
         courses = Course.objects.all()
@@ -41,6 +54,7 @@ class CourseViewSet(ViewSet):
             serialize.save()
             return Response(serialize.data)
         return Response(serialize.errors)
+'''
 
 
 

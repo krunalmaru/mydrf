@@ -5,7 +5,43 @@ from .models import Course,CourseModelSerializer
 from django.http import Http404
 from rest_framework import status
 from rest_framework import mixins, generics
+from rest_framework.viewsets import ViewSet
 # Create your views here.
+
+class CourseViewSet(ViewSet):
+    def list(self,request):
+        courses = Course.objects.all()
+        serializer = CourseModelSerializer(courses, many=True)
+        return Response(serializer.data)
+
+    def create(self,request):
+        serializer = CourseModelSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
+    def retrieve(self, request, pk):
+        try:
+            course=Course.objects.get(pk=pk)
+        except Course.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = CourseModelSerializer(course) 
+        return Response(serializer.data)       
+
+    def destroy(self, request,pk):
+        course = Course.objects.get(pk=pk)
+        course.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def update(self, request,pk):
+        course = Course.objects.get(pk=pk)
+        serialize = CourseModelSerializer(course, data=request.data)
+        if serialize.is_valid():
+            serialize.save()
+            return Response(serialize.data)
+        return Response(serialize.errors)
+
 
 
 '''########## listApiview = listmodelmixin + genericApiView ###########'''
@@ -21,18 +57,23 @@ class CorseDetailView(generics.RetrieveAPIView, generics.UpdateAPIView,generics.
     serializer_class = CourseModelSerializer
 
 '''
-class CourseListView(generics.ListCreateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseModelSerializer
+# class CourseListView(generics.ListCreateAPIView):
+#     queryset = Course.objects.all()
+#     serializer_class = CourseModelSerializer
 
 # class CorseDetailView(generics.RetrieveUpdateAPIView):
 #     queryset = Course.objects.all()
 #     serializer_class = CourseModelSerializer
 
 
-class CorseDetailView(generics.RetrieveDestroyAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseModelSerializer
+# class CorseDetailView(generics.RetrieveDestroyAPIView):
+#     queryset = Course.objects.all()
+#     serializer_class = CourseModelSerializer
+
+# class CorseDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Course.objects.all()
+#     serializer_class = CourseModelSerializer
+
 
 '''
 class CourseListView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):

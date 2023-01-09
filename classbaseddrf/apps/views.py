@@ -30,6 +30,12 @@ class CorseDetailView(APIView):
         course = self.get_course(pk)
         serializer = CourseModelSerializer(course)
         return Response(serializer.data)
+    def post(self,request,pk):
+        serialiser = CourseModelSerializer(data=request.data)
+        if serialiser.is_valid():
+            serialiser.save()
+            return Response(serialiser.data)
+        return Response(serialiser.errors)
 
     def delete(self,request,pk):
         course = self.get_course(pk)

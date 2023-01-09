@@ -18,5 +18,6 @@ from django.urls import path
 from apps import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', views.CourseListView.as_view(), name='courselist'),
+    path('api/course', views.CourseListView.as_view(), name='courselist'),
+    path('api/course/<int:pk>', views.CorseDetailView.as_view(),name='cousedetail'),
 ]

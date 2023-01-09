@@ -11,8 +11,12 @@ from rest_framework import mixins, generics
 '''########## listApiview = listmodelmixin + genericApiView ###########'''
 '''########## generics = get ,post,put,delete ############'''
 
-
+'''
 class CourseListView(generics.ListAPIView, generics.CreateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseModelSerializer
+'''
+class CourseListView(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseModelSerializer
 

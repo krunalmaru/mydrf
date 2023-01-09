@@ -15,12 +15,17 @@ from rest_framework import mixins, generics
 class CourseListView(generics.ListAPIView, generics.CreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseModelSerializer
+
+class CorseDetailView(generics.RetrieveAPIView, generics.UpdateAPIView,generics.DestroyAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseModelSerializer
+
 '''
 class CourseListView(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseModelSerializer
 
-class CorseDetailView(generics.RetrieveAPIView, generics.UpdateAPIView,generics.DestroyAPIView):
+class CorseDetailView(generics.RetrieveUpdateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseModelSerializer
 
@@ -36,19 +41,20 @@ class CourseListView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.Ge
     def post(self, request):
         return self.create(request)
 '''
+
 '''
-class CorseDetailView(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin):
-    queryset = Course.objects.all()
-    serializer_class = CourseModelSerializer
+    class CorseDetailView(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin):
+        queryset = Course.objects.all()
+        serializer_class = CourseModelSerializer
 
-    def get(self,request,pk):
-        return self.retrieve(request,pk)
+        def get(self,request,pk):
+            return self.retrieve(request,pk)
 
-    def delete(self, request,pk):
-        return self.destroy(request,pk)
+        def delete(self, request,pk):
+            return self.destroy(request,pk)
 
-    def put(self, request,pk):
-        return self.update(request,pk)
+        def put(self, request,pk):
+            return self.update(request,pk)
 '''
 
 # class CourseListView(APIView):

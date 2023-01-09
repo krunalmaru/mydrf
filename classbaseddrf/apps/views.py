@@ -25,7 +25,12 @@ class CourseListView(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseModelSerializer
 
-class CorseDetailView(generics.RetrieveUpdateAPIView):
+# class CorseDetailView(generics.RetrieveUpdateAPIView):
+#     queryset = Course.objects.all()
+#     serializer_class = CourseModelSerializer
+
+
+class CorseDetailView(generics.RetrieveDestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseModelSerializer
 

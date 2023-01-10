@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Course,Instructor,MyCourse
@@ -8,11 +9,17 @@ from rest_framework import mixins, generics
 from .serializer import CourseModelSerializer,InstructorSerializer,MyCourseSerializer
 from rest_framework.viewsets import ViewSet,ModelViewSet
 from rest_framework.permissions import IsAuthenticated,IsAdminUser,BasePermission,BasePermissionMetaclass
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import BasicAuthentication,TokenAuthentication
+from rest_framework.authtoken.models import Token
 # Create your views here.
+# users = User.objects.all()
+# for user in users:
+#     token = Token.objects.get_or_create(user=user)
+#     print(token)
 
 class WriteByAdminOnlyPermission(BasePermission):
     def has_permission(self, request, view):
+        print("permisiion user is:", request.user)
         user = request.user
         if request.method == 'GET':
             return True
@@ -33,8 +40,8 @@ class InstructorDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Instructor.objects.all()
 
 class MyCoursesListview(generics.ListCreateAPIView):
-    # authentication_classes = [BasicAuthentication]
-    permission_classes = [WriteByAdminOnlyPermission]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, WriteByAdminOnlyPermission]
     serializer_class = MyCourseSerializer
     queryset = MyCourse.objects.all()
 

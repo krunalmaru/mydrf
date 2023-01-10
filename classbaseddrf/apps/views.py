@@ -7,16 +7,21 @@ from rest_framework import status
 from rest_framework import mixins, generics
 from .serializer import CourseModelSerializer,InstructorSerializer,MyCourseSerializer
 from rest_framework.viewsets import ViewSet,ModelViewSet
+from rest_framework import permissions
+from rest_framework.authentication import BasicAuthentication
 # Create your views here.
 
 class InstructorListView(generics.ListCreateAPIView):
     serializer_class = InstructorSerializer
     queryset = Instructor.objects.all()
+
 class InstructorDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = InstructorSerializer
     queryset = Instructor.objects.all()
-    
+
 class MyCoursesListview(generics.ListCreateAPIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = MyCourseSerializer
     queryset = MyCourse.objects.all()
 

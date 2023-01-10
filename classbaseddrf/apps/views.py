@@ -7,9 +7,22 @@ from rest_framework import status
 from rest_framework import mixins, generics
 from .serializer import CourseModelSerializer,InstructorSerializer,MyCourseSerializer
 from rest_framework.viewsets import ViewSet,ModelViewSet
-from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated,IsAdminUser,BasePermission,BasePermissionMetaclass
 from rest_framework.authentication import BasicAuthentication
 # Create your views here.
+
+class WriteByAdminOnlyPermission(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        if request.method == 'GET':
+            return True
+        if request.method == 'POST' or request.method=='PUt' or request.method =='DELETE':
+            if user.is_superuser:
+                return True
+        
+        return False
+
+
 
 class InstructorListView(generics.ListCreateAPIView):
     serializer_class = InstructorSerializer
@@ -20,8 +33,8 @@ class InstructorDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Instructor.objects.all()
 
 class MyCoursesListview(generics.ListCreateAPIView):
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    permission_classes = [WriteByAdminOnlyPermission]
     serializer_class = MyCourseSerializer
     queryset = MyCourse.objects.all()
 

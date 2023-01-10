@@ -1,20 +1,29 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Course,CourseModelSerializer, Instructor,InstructorSerializer,MyCourse,MyCourseSerializer
+from .models import Course,Instructor,MyCourse
 from django.http import Http404
 from rest_framework import status
 from rest_framework import mixins, generics
+from .serializer import CourseModelSerializer,InstructorSerializer,MyCourseSerializer
 from rest_framework.viewsets import ViewSet,ModelViewSet
 # Create your views here.
 
 class InstructorListView(generics.ListCreateAPIView):
     serializer_class = InstructorSerializer
     queryset = Instructor.objects.all()
-
+class InstructorDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = InstructorSerializer
+    queryset = Instructor.objects.all()
+    
 class MyCoursesListview(generics.ListCreateAPIView):
     serializer_class = MyCourseSerializer
     queryset = MyCourse.objects.all()
+
+class CourseDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = MyCourseSerializer
+    queryset = MyCourse.objects.all()
+
 
 # class CourseViewSet(ModelViewSet):
 #     queryset = Course.objects.all()

@@ -40,7 +40,6 @@ class InstructorDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Instructor.objects.all()
 
 class MyCoursesListview(generics.ListCreateAPIView):
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, WriteByAdminOnlyPermission]
     serializer_class = MyCourseSerializer
     queryset = MyCourse.objects.all()
